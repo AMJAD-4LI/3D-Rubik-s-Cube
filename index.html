@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rubik's Cube Solver & Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader">
+            <div class="cube-loader">
+                <div class="cube-face cube-face-front"></div>
+                <div class="cube-face cube-face-back"></div>
+                <div class="cube-face cube-face-right"></div>
+                <div class="cube-face cube-face-left"></div>
+                <div class="cube-face cube-face-top"></div>
+                <div class="cube-face cube-face-bottom"></div>
+            </div>
+            <p class="loading-text">Loading 3D Experience...</p>
+        </div>
+    </div>
+
+    <!-- Background Particles -->
+    <canvas id="particles-canvas" class="particles-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎲</span>
+                <span class="logo-text">3D Rubik Studio</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active">Home</a></li>
+                <li><a href="#" class="nav-link">Solver</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- 3D Canvas Container -->
+            <div class="canvas-container">
+                <canvas id="cube-canvas"></canvas>
+            </div>
+
+            <!-- Control Panel -->
+            <aside class="control-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Controls</h2>
+                    <button class="panel-toggle" id="panel-toggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="panel-content" id="panel-content">
+                    <!-- Action Buttons -->
+                    <div class="control-group">
+                        <h3 class="group-title">Actions</h3>
+                        <div class="button-grid">
+                            <button class="control-btn btn-shuffle" id="btn-shuffle">
+                                <span class="btn-icon">🔀</span>
+                                <span class="btn-text">Scramble</span>
+                            </button>
+                            <button class="control-btn btn-reset" id="btn-reset">
+                                <span class="btn-icon">🧩</span>
+                                <span class="btn-text">Reset</span>
+                            </button>
+                            <button class="control-btn btn-hint" id="btn-hint">
+                                <span class="btn-icon">💡</span>
+                                <span class="btn-text">Hint</span>
+                            </button>
+                            <button class="control-btn btn-undo" id="btn-undo">
+                                <span class="btn-icon">↩</span>
+                                <span class="btn-text">Undo</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Animation Controls -->
+                    <div class="control-group">
+                        <h3 class="group-title">Animation</h3>
+                        <div class="button-grid">
+                            <button class="control-btn btn-solve" id="btn-solve">
+                                <span class="btn-icon">✨</span>
+                                <span class="btn-text">Auto Solve</span>
+                            </button>
+                            <button class="control-btn btn-pause" id="btn-pause">
+                                <span class="btn-icon">⏯</span>
+                                <span class="btn-text">Pause</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Speed Control -->
+                    <div class="control-group">
+                        <h3 class="group-title">Rotation Speed</h3>
+                        <div class="speed-control">
+                            <span class="speed-label">Slow</span>
+                            <input type="range" class="speed-slider" id="speed-slider" min="1" max="10" value="5">
+                            <span class="speed-label">Fast</span>
+                        </div>
+                        <div class="speed-value">
+                            Speed: <span id="speed-value">5</span>
+                        </div>
+                    </div>
+
+                    <!-- Move History -->
+                    <div class="control-group">
+                        <h3 class="group-title">Move History</h3>
+                        <div class="move-history" id="move-history">
+                            <p class="no-moves">No moves yet</p>
+                        </div>
+                        <button class="control-btn btn-clear" id="btn-clear-history">
+                            <span class="btn-text">Clear History</span>
+                        </button>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <div class="control-group">
+                        <h3 class="group-title">Theme</h3>
+                        <button class="theme-toggle" id="theme-toggle">
+                            <span class="theme-icon">🌙</span>
+                            <span class="theme-text">Dark Mode</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Notification Popup -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <span class="notification-icon" id="notification-icon">✓</span>
+            <span class="notification-text" id="notification-text">Action completed</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">Developed by <span class="footer-name">AMJAD-4LI</span></p>
+            <p class="footer-copy">© 2026 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
